@@ -1,0 +1,153 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<link href="../../css/mui.min.css" rel="stylesheet" />
+		<style>
+			.button{line-height: 35px;margin: 5px 2%;height:35px;padding: 0 1% 0 1%;}
+			.mui-btn{font-size: 12px;}
+			.mui-search{width:90%;margin:10px 5% 0px 5%;}
+			.mui-content{margin-bottom: 45px;}
+			.mui-col-xs-4{border: 1px solid red;}
+			.mui-foot{position: fixed;width:100%;height: 55px;bottom: 0;border-top: 1px solid #fff;background: #CCCCCC;}
+			.mui-foot .mui-col-sm-3{line-height: 55px;text-align: center;border-right: 1px solid #AAAAAA;}
+			.mui-data-con{overflow: hidden;white-space: nowrap; text-overflow: ellipsis;}
+			.mui-data-red{color: red;}
+			.mui-data-red span{padding:5px 5px 5px 15px;background: red;color:#fff;border-radius: 0 50% 50% 0;}
+			.mui-popover{height: 320px;}
+		</style>
+	</head>
+	<body>
+		<header class="mui-bar mui-bar-nav">
+		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		    <a id="menu" class="mui-action-menu mui-icon mui-icon-bars mui-pull-left" href="#status"></a>
+		    <h1 class="mui-title">分拣管理</h1>
+		    <a id="menu" class="mui-action-menu mui-icon mui-icon-bars mui-pull-right" href="#setting"></a>
+		    <span class="mui-pull-right button">提交</span>
+		    <span class="mui-pull-right button">保存</span>
+		</header>
+		<div class="mui-content">
+			<div class="mui-input-row mui-search">
+			    <input type="search" class="mui-input-clear" placeholder="">
+			</div>
+		    <ul id="mui-data" class="mui-table-view">
+				<li class="mui-table-view-cell">
+					<div class="mui-slider-right mui-disabled">
+						<a class="mui-btn mui-btn-yellow mui-stick">置顶</a>
+						<a class="mui-btn mui-btn-red mui-delete">删除</a>
+					</div>
+					<div class="mui-slider-handle">
+						<div class="mui-col-sm-8 mui-pull-left">
+							<p class="mui-data-con mui-data-red"><span>1</span>&nbsp;青年路店党羽十大</p>
+							<p class="mui-data-con">时间：2018.6.3</p>
+							<p class="mui-data-con">单号：DD201802251452896</p>
+							<p class="mui-data-con">数量：355</p>
+						</div>
+						<div class="mui-col-sm-4 mui-pull-left">
+							<p class="mui-data-con">状态：以保存</p>
+							<p class="mui-data-con">代码：10102240</p>
+							<p class="mui-data-con">收货：DD201802251452896</p>
+							<p class="mui-data-con">金额：$355</p>
+						</div>
+					</div>
+				</li>
+				<li class="mui-table-view-cell">
+					<div class="mui-slider-right mui-disabled">
+						<a class="mui-btn mui-btn-yellow mui-stick">置顶</a>
+						<a class="mui-btn mui-btn-red mui-delete">删除</a>
+					</div>
+					<div class="mui-slider-handle">
+						<div class="mui-col-sm-8 mui-pull-left">
+							<p class="mui-data-con mui-data-red"><span>2</span>&nbsp;青年路店党羽十大</p>
+							<p class="mui-data-con">时间：2018.6.3</p>
+							<p class="mui-data-con">单号：DD201802251452896</p>
+							<p class="mui-data-con">数量：355</p>
+						</div>
+						<div class="mui-col-sm-4 mui-pull-left">
+							<p class="mui-data-con">状态：以保存</p>
+							<p class="mui-data-con">代码：10102240</p>
+							<p class="mui-data-con">收货：DD201802251452896</p>
+							<p class="mui-data-con">金额：$355</p>
+						</div>
+					</div>
+				</li>
+				<li class="mui-table-view-cell">
+					<div class="mui-slider-right mui-disabled">
+						<a class="mui-btn mui-btn-yellow mui-stick">置顶</a>
+						<a class="mui-btn mui-btn-red mui-delete">删除</a>
+					</div>
+					<div class="mui-slider-handle">
+						<div class="mui-col-sm-8 mui-pull-left">
+							<p class="mui-data-con mui-data-red"><span>3</span>&nbsp;青年路店党羽十大</p>
+							<p class="mui-data-con">时间：2018.6.3</p>
+							<p class="mui-data-con">单号：DD201802251452896</p>
+							<p class="mui-data-con">数量：355</p>
+						</div>
+						<div class="mui-col-sm-4 mui-pull-left">
+							<p class="mui-data-con">状态：以保存</p>
+							<p class="mui-data-con">代码：10102240</p>
+							<p class="mui-data-con">收货：DD201802251452896</p>
+							<p class="mui-data-con">金额：$355</p>
+						</div>
+					</div>
+				</li>
+			</ul>
+		</div>
+		<!--左上角弹出菜单-->
+		<div id="status" class="mui-popover">
+			<div class="mui-popover-arrow"></div>
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell">
+							<a href="#">状态设置</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<!--右上角弹出菜单-->
+		<div id="setting" class="mui-popover">
+			<div class="mui-popover-arrow"></div>
+			<div class="mui-scroll-wrapper">
+				<div class="mui-scroll">
+					<ul class="mui-table-view">
+						<li class="mui-table-view-cell">
+							<a href="#">默认设置</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="mui-foot">
+			<div class="mui-col-sm-3 mui-pull-left">修改</div>
+			<div class="mui-col-sm-3 mui-pull-left">制单</div>
+			<div class="mui-col-sm-3 mui-pull-left">撤单</div>
+			<div class="mui-col-sm-3 mui-pull-left">查单</div>
+		</div>
+		<script src="../../js/mui.min.js"></script>
+		<script src="../../js/jquery.js"></script>
+		<script type="text/javascript">
+			mui.init();
+			//删除按钮
+			$(".mui-delete").on('click',function(){
+				var obj = $(this).parents(".mui-table-view-cell");
+				var btnArray = ['否', '是'];
+				mui.confirm('确认要删除吗，确认？', '请确认', btnArray, function(e) {
+					if (e.index == 1) {
+						obj.remove();
+					}
+				})
+			});
+			//置顶功能
+			$(".mui-stick").click(function(){
+				var obj = $(this).parents(".mui-table-view-cell");
+				//加true深拷贝  解决clone不clone时间的问题
+				$("#mui-data li").first().before(obj.clone(true));
+				obj.remove();
+			});
+		</script>
+	</body>
+</html>

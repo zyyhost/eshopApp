@@ -5,12 +5,88 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
     <title></title>
     <script src="js/mui.min.js"></script>
+    <script type="text/javascript" src="js/jquery.js" ></script>
     <link href="css/mui.min.css" rel="stylesheet"/>
-    <script type="text/javascript" charset="utf-8">
-      	mui.init();
-    </script>
+    <style>
+    	.mui-icon{color:#007AFF;font-size: 400%;}
+    </style>
 </head>
 <body>
-	
+	<header class="mui-bar mui-bar-nav">
+	    <h1 class="mui-title">eShop</h1>
+	</header>
+	<div class="mui-content">
+	   <div class="mui-col-xs-4 mui-pull-left mui-text-center example">
+	      <span class="mui-icon mui-icon-weixin"></span>
+	   	  <p>进货管理</p>
+	   </div>
+	   <div class="mui-col-xs-4 mui-pull-left mui-text-center barcode">
+	      <span class="mui-icon mui-icon-weixin"></span>
+	   	  <p>二维码测试</p>
+	   </div>
+	   <div class="mui-col-xs-4 mui-pull-left mui-text-center">
+	      <span class="mui-icon mui-icon-weixin"></span>
+	   	  <p>进货管理</p>
+	   </div>
+	   <div class="mui-col-xs-4 mui-pull-left mui-text-center">
+	      <span class="mui-icon mui-icon-weixin"></span>
+	   	  <p>进货管理</p>
+	   </div>
+	   <div class="mui-col-xs-4 mui-pull-left mui-text-center">
+	      <span class="mui-icon mui-icon-weixin"></span>
+	   	  <p>进货管理</p>
+	   </div>
+	   <div class="mui-col-xs-4 mui-pull-left mui-text-center">
+	      <span class="mui-icon mui-icon-weixin"></span>
+	   	  <p>进货管理</p>
+	   </div>
+	   <div class="mui-col-xs-4 mui-pull-left mui-text-center">
+	      <span class="mui-icon mui-icon-weixin"></span>
+	   	  <p>进货管理</p>
+	   </div>
+	   <div class="mui-col-xs-4 mui-pull-left mui-text-center">
+	      <span class="mui-icon mui-icon-weixin"></span>
+	   	  <p>进货管理</p>
+	   </div>
+	   <div class="mui-col-xs-4 mui-pull-left mui-text-center">
+	      <span class="mui-icon mui-icon-weixin"></span>
+	   	  <p>进货管理</p>
+	   </div>
+	</div>
+	<script type="text/javascript">
+			mui.init();
+			$(".example").click(function(){
+				mui.openWindow({
+					url: 'html/sort/index.html',
+					id: 'html/sort/index',
+					preload: true,
+					show: {
+						aniShow: 'pop-in'
+					},
+					styles: {
+						popGesture: 'hide'
+					},
+					waiting: {
+						autoShow: false
+					}
+				});
+			});
+			$(".barcode").click(function(){
+				mui.openWindow({
+					url: 'html/barcode/barcode.html',
+					id: 'html/barcode/barcode',
+					preload: true,
+					show: {
+						aniShow: 'pop-in'
+					},
+					styles: {
+						popGesture: 'hide'
+					},
+					waiting: {
+						autoShow: false
+					}
+				});
+			});
+		</script>
 </body>
 </html>
