@@ -1,38 +1,103 @@
 <!doctype html>
 <html>
+
 	<head>
 		<meta charset="UTF-8">
 		<title></title>
 		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
 		<link href="../../css/mui.min.css" rel="stylesheet" />
 		<style>
-			.button{line-height: 35px;margin: 5px 2%;height:35px;padding: 0 1% 0 1%;}
-			.mui-btn{font-size: 12px;}
-			.mui-search{width:90%;margin:10px 5% 0px 5%;}
-			.mui-content{margin-bottom: 45px;}
-			.mui-col-xs-4{border: 1px solid red;}
-			.mui-foot{position: fixed;width:100%;height: 55px;bottom: 0;border-top: 1px solid #fff;background: #CCCCCC;}
-			.mui-foot .mui-col-sm-3{line-height: 55px;text-align: center;border-right: 1px solid #AAAAAA;}
-			.mui-data-con{overflow: hidden;white-space: nowrap; text-overflow: ellipsis;}
-			.mui-data-red{color: red;}
-			.mui-data-red span{padding:5px 5px 5px 15px;background: red;color:#fff;border-radius: 0 50% 50% 0;}
-			.mui-popover{height: 320px;}
+			* {
+				font-size: 12px;
+			}
+			
+			.button {
+				line-height: 35px;
+				margin: 5px 2%;
+				height: 35px;
+				padding: 0 1% 0 1%;
+			}
+			
+			.mui-btn {
+				font-size: 12px;
+			}
+			
+			.mui-search {
+				width: 90%;
+				margin: 10px 5% 0px 5%;
+			}
+			
+			.mui-content {
+				margin-bottom: 45px;
+			}
+			
+			.mui-col-xs-4 {
+				border: 1px solid red;
+			}
+			
+			.mui-bar-footer {
+				height: 55px;
+				bottom: 0;
+			}
+			
+			.mui-bar-footer .mui-col-sm-3 {
+				line-height: 55px;
+				text-align: center;
+				border-right: 1px solid #AAAAAA;
+			}
+			
+			.mui-data-con {
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+			
+			.mui-data-red {
+				color: red;
+			}
+			
+			.mui-data-red span {
+				padding: 5px 5px 5px 15px;
+				background: red;
+				color: #fff;
+				border-radius: 0 50% 50% 0;
+			}
+			
+			.mui-popover {
+				height: 320px;
+				width:80%;
+			}
+			input{
+				font-size: 12px;
+			}
+			/*右上角弹出样式*/
+			.mui-label{
+				line-height: 33px;
+			}
+			.mui-radio{
+				float: left;
+				width:37%;
+			}
+			.mui-first-label{
+				width:26%;float: left;
+			}
 		</style>
 	</head>
+
 	<body>
 		<header class="mui-bar mui-bar-nav">
-		    <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
-		    <a id="menu" class="mui-action-menu mui-icon mui-icon-bars mui-pull-left" href="#status"></a>
-		    <h1 class="mui-title">分拣管理</h1>
-		    <a id="menu" class="mui-action-menu mui-icon mui-icon-bars mui-pull-right" href="#setting"></a>
-		    <span class="mui-pull-right button">提交</span>
-		    <span class="mui-pull-right button">保存</span>
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<a id="menu" class="mui-action-menu mui-icon mui-icon-bars mui-pull-left" href="#status"></a>
+			<h1 class="mui-title">分拣管理</h1>
+			<a id="menu" class="mui-action-menu mui-icon mui-icon-bars mui-pull-right" href="#setting"></a>
+			<span class="mui-pull-right button">提交</span>
+			<span class="mui-pull-right button">保存</span>
 		</header>
 		<div class="mui-content">
 			<div class="mui-input-row mui-search">
-			    <input type="search" class="mui-input-clear" placeholder="">
+				<input type="search" class="mui-input-clear" placeholder="">
 			</div>
-		    <ul id="mui-data" class="mui-table-view">
+			<ul id="mui-data" class="mui-table-view">
 				<li class="mui-table-view-cell">
 					<div class="mui-slider-right mui-disabled">
 						<a class="mui-btn mui-btn-yellow mui-stick">置顶</a>
@@ -114,35 +179,74 @@
 			<div class="mui-scroll-wrapper">
 				<div class="mui-scroll">
 					<ul class="mui-table-view">
-						<li class="mui-table-view-cell">
-							<a href="#">默认设置</a>
+						<li class="mui-table-view-cell mui-text-center">
+							<a href="#">默认设置选项</a>
+						</li>
+						<li class="mui-table-view-cell mui-text-center">
+							<div class="mui-input-row">
+								<input type="text" placeholder="请输入分拣机构">
+							</div>
+						</li>
+						<li class="mui-table-view-cell mui-text-center mui-left">
+							<label class="mui-label mui-first-label">是否显示单价:</label>
+							<div class="mui-radio">
+								<label class="mui-label">显示</label>
+								<input name="Checkbox" type="radio" checked>
+							</div>
+							<div class="mui-radio">
+								<label class="mui-label">不显示</label>
+								<input name="Checkbox" type="radio">
+							</div>
+						</li>
+						<li class="mui-table-view-cell mui-text-center mui-left">
+							<label class="mui-label mui-first-label">商品显示项目:</label>
+							<div class="mui-radio">
+								<label class="mui-label">皮重</label>
+								<input name="Checkbox1" type="radio" checked>
+							</div>
+							<div class="mui-radio">
+								<label class="mui-label">货号</label>
+								<input name="Checkbox1" type="radio">
+							</div>
+						</li>
+						<li class="mui-table-view-cell mui-text-center mui-left">
+							<label class="mui-label mui-first-label">默认制单方式:</label>
+							<div class="mui-radio">
+								<label class="mui-label">导入</label>
+								<input name="Checkbox2" type="radio" checked>
+							</div>
+							<div class="mui-radio">
+								<label class="mui-label">自制</label>
+								<input name="Checkbox2" type="radio">
+							</div>
 						</li>
 					</ul>
 				</div>
 			</div>
 		</div>
-		<div class="mui-foot">
+		<div class="mui-bar mui-bar-footer" style="padding: 0px;">
 			<div class="mui-col-sm-3 mui-pull-left">修改</div>
 			<div class="mui-col-sm-3 mui-pull-left">制单</div>
 			<div class="mui-col-sm-3 mui-pull-left">撤单</div>
 			<div class="mui-col-sm-3 mui-pull-left">查单</div>
 		</div>
+
 		<script src="../../js/mui.min.js"></script>
 		<script src="../../js/jquery.js"></script>
 		<script type="text/javascript">
 			mui.init();
 			//删除按钮
-			$(".mui-delete").on('click',function(){
+			$(".mui-delete").on('click', function() {
 				var obj = $(this).parents(".mui-table-view-cell");
 				var btnArray = ['否', '是'];
 				mui.confirm('确认要删除吗，确认？', '请确认', btnArray, function(e) {
-					if (e.index == 1) {
+					if(e.index == 1) {
 						obj.remove();
 					}
 				})
 			});
 			//置顶功能
-			$(".mui-stick").click(function(){
+			$(".mui-stick").click(function() {
 				var obj = $(this).parents(".mui-table-view-cell");
 				//加true深拷贝  解决clone不clone时间的问题
 				$("#mui-data li").first().before(obj.clone(true));
@@ -150,4 +254,5 @@
 			});
 		</script>
 	</body>
+
 </html>

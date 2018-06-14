@@ -1,14 +1,14 @@
 {
-	"login.html": {
-		"refer": [
-			"index.html"
-		]
-	},
-	"index.html": {
-		"refer": [
-			"login.html",
-			"html/sort/index.html",
-			"html/barcode/barcode.html"
-		]
-	}
+  "login.html": {
+    "refer": [
+      "index.html"
+    ]
+  },
+  "index.html": {
+    "refer": [
+      "login.html",
+      "html/sort/index.html",
+      "html/barcode/barcode.html"
+    ]
+  }
 }
