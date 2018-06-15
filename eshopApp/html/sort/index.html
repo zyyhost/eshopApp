@@ -65,21 +65,60 @@
 			
 			.mui-popover {
 				height: 320px;
-				width:80%;
+				width: 80%;
 			}
-			input{
+			
+			input {
 				font-size: 12px;
 			}
 			/*右上角弹出样式*/
-			.mui-label{
+			
+			#setting {
+				width: 100%;
+			}
+			
+			.mui-radio input {
+				width: 0px !important;
+			}
+			
+			.mui-label {
 				line-height: 33px;
+				padding-right: 0px !important;
 			}
-			.mui-radio{
+			
+			.mui-two-radio {
 				float: left;
-				width:37%;
+				width: 37%;
 			}
-			.mui-first-label{
-				width:26%;float: left;
+			
+			.mui-first-label {
+				width: 26%;
+				float: left;
+			}
+			
+			.mui-full-label {
+				width: 100%;
+				float: left;
+			}
+			
+			.mui-three-radio {
+				width: 33.333%;
+				float: left;
+			}
+			
+			.mui-three-one-radio {
+				width: 31%;
+				float: left;
+			}
+			
+			.mui-three-two-radio {
+				width: 30%;
+				float: left;
+			}
+			
+			.mui-three-three-radio {
+				width: 39%;
+				float: left;
 			}
 		</style>
 	</head>
@@ -189,37 +228,113 @@
 						</li>
 						<li class="mui-table-view-cell mui-text-center mui-left">
 							<label class="mui-label mui-first-label">是否显示单价:</label>
-							<div class="mui-radio">
+							<div class="mui-radio mui-two-radio">
 								<label class="mui-label">显示</label>
 								<input name="Checkbox" type="radio" checked>
 							</div>
-							<div class="mui-radio">
+							<div class="mui-radio mui-two-radio">
 								<label class="mui-label">不显示</label>
 								<input name="Checkbox" type="radio">
 							</div>
 						</li>
 						<li class="mui-table-view-cell mui-text-center mui-left">
 							<label class="mui-label mui-first-label">商品显示项目:</label>
-							<div class="mui-radio">
+							<div class="mui-radio mui-two-radio">
 								<label class="mui-label">皮重</label>
 								<input name="Checkbox1" type="radio" checked>
 							</div>
-							<div class="mui-radio">
+							<div class="mui-radio mui-two-radio">
 								<label class="mui-label">货号</label>
 								<input name="Checkbox1" type="radio">
 							</div>
 						</li>
 						<li class="mui-table-view-cell mui-text-center mui-left">
 							<label class="mui-label mui-first-label">默认制单方式:</label>
-							<div class="mui-radio">
+							<div class="mui-radio mui-two-radio">
 								<label class="mui-label">导入</label>
 								<input name="Checkbox2" type="radio" checked>
 							</div>
-							<div class="mui-radio">
+							<div class="mui-radio mui-two-radio">
 								<label class="mui-label">自制</label>
 								<input name="Checkbox2" type="radio">
 							</div>
 						</li>
+						<li class="mui-table-view-cell mui-text-center mui-left">
+							<label class="mui-label mui-full-label">自制单据条件:</label>
+						</li>
+						<li class="mui-table-view-cell mui-text-center mui-left">
+							<div class="mui-radio mui-three-one-radio">
+								<label class="mui-label">要货单&nbsp;供应商</label>
+								<input name="Checkbox3" type="radio" checked>
+							</div>
+							<div class="mui-radio mui-three-two-radio">
+								<label class="mui-label">要货单&nbsp;类别</label>
+								<input name="Checkbox3" type="radio">
+							</div>
+							<div class="mui-radio mui-three-three-radio">
+								<label class="mui-label">要货单&nbsp;类别&nbsp;供应商</label>
+								<input name="Checkbox3" type="radio">
+							</div>
+						</li>
+						<li class="mui-table-view-cell mui-text-center mui-left">
+							<label class="mui-label mui-full-label">默认修改方式:</label>
+						</li>
+						<li class="mui-table-view-cell mui-text-center mui-left">
+							<div class="mui-radio mui-three-radio">
+								<label class="mui-label">自动列单</label>
+								<input name="Checkbox3" type="radio" checked>
+							</div>
+							<div class="mui-radio mui-three-radio">
+								<label class="mui-label">查单修改</label>
+								<input name="Checkbox3" type="radio">
+							</div>
+							<div class="mui-radio mui-three-radio">
+								<label class="mui-label">全部</label>
+								<input name="Checkbox3" type="radio">
+							</div>
+						</li>
+						<li class="mui-table-view-cell mui-text-center mui-left">
+							<label class="mui-label mui-full-label">默认撤单方式:</label>
+						</li>
+						<li class="mui-table-view-cell mui-text-center mui-left">
+							<div class="mui-radio mui-three-radio">
+								<label class="mui-label">自动列单</label>
+								<input name="Checkbox3" type="radio" checked>
+							</div>
+							<div class="mui-radio mui-three-radio">
+								<label class="mui-label">查单修改</label>
+								<input name="Checkbox3" type="radio">
+							</div>
+							<div class="mui-radio mui-three-radio">
+								<label class="mui-label">全部</label>
+								<input name="Checkbox3" type="radio">
+							</div>
+						</li>
+						<li class="mui-table-view-cell mui-text-center mui-left">
+							<label class="mui-label mui-full-label">库存不足时默认分拣方式:</label>
+						</li>
+						<li class="mui-table-view-cell mui-text-center mui-left">
+							<div class="mui-radio mui-three-radio">
+								<label class="mui-label">算数平均</label>
+								<input name="Checkbox3" type="radio" checked>
+							</div>
+							<div class="mui-radio mui-three-radio">
+								<label class="mui-label">需求加权</label>
+								<input name="Checkbox3" type="radio">
+							</div>
+							<div class="mui-radio mui-three-radio">
+								<label class="mui-label">人工需求</label>
+								<input name="Checkbox3" type="radio">
+							</div>
+						</li>
+						<li class="mui-table-view-cell mui-text-center">
+							<div class="mui-input-row">
+							    <label>默认显示单据天数</label>
+							    <input type="text" placeholder="默认显示单据天数">
+							</div>
+						</li>
+						
+						
 					</ul>
 				</div>
 			</div>
@@ -235,6 +350,8 @@
 		<script src="../../js/jquery.js"></script>
 		<script type="text/javascript">
 			mui.init();
+			//超出内容进行滑动，制定class,id即可
+			mui('.mui-scroll-wrapper').scroll();
 			//删除按钮
 			$(".mui-delete").on('click', function() {
 				var obj = $(this).parents(".mui-table-view-cell");
