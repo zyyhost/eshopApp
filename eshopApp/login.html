@@ -64,20 +64,17 @@
 					ajax('http://47.95.248.189/storeapp/test.php', {
 						operName: operName,
 						operPw: operPw
-					}, deal);
+					}, function(data) {
+						if(data == null || data == "") {
+							mui.toast("登陆失败");
+						} else {
+							mui.toast("登陆成功");
+							setTimeout(function() {
+								openWindow("index.html", "index", null);
+							}, 3000);
+						}
+					});
 				});
-				
-				//处理程序
-				function deal(data) {
-					if(data == null || data == "") {
-						mui.toast("登陆失败");
-					} else {
-						mui.toast("登陆成功");
-						setTimeout(function() {
-							openWindow("index.html", "index", null);
-						}, 3000);
-					}
-				}
 			</script>
 	</body>
 
