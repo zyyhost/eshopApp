@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>订单详情</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/mui.min.css" />
+		<style>
+			.mui-data-con {
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+			
+			.mui-data-red {
+				color: red;
+			}
+			
+			.mui-data-red span {
+				padding: 5px 5px 5px 15px;
+				background: red;
+				color: #fff;
+				border-radius: 0 50% 50% 0;
+			}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">订单详情</h1>
+		</header>
+
+		<div class="mui-content">
+			<ul class="mui-table-view">
+
+			</ul>
+		</div>
+	</body>
+	<script type="text/javascript" src="../../js/mui.min.js"></script>
+	<script type="text/javascript" src="../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../js/util.js"></script>
+	<script>
+		mui.init();
+		mui.plusReady(function() {
+			var orderId = plus.webview.currentWebview().orderId;
+			var html, total;
+			ajax("http://47.95.248.189/storeapp/pm_sheet_detail.php", {
+				sheet_no: orderId
+			}, function(data) {
+				for(var i = 0; i < data.length; i++) {
+					total = data[i]['real_qty'].split('.');
+					html = '<li class="mui-table-view-cell">' +
+						'<div class="mui-slider-right mui-disabled">' +
+						'	<a class="mui-btn mui-btn-red mui-delete" data-goodsId="454">删除</a>' +
+						'</div>' +
+						'<div class="mui-slider-handle mui-order">' +
+						'	<div class="mui-col-sm-8 mui-pull-left">' +
+						'		<p class="mui-data-con mui-data-red"><span>' + (i + 1) + '</span>&nbsp;' + data[i]['item_name'] + '</p>' +
+						'		<p class="mui-data-con">单位：' + data[i]['unit_no'] + '</p>' +
+						'		<p class="mui-data-con">要货量：' + data[i]['real_qty'] + '</p>' +
+						'	</div>' +
+						'	<div class="mui-col-sm-4 mui-pull-left">' +
+						'		<p class="mui-data-con">编码：' + data[i]['item_no'] + '</p>' +
+						'		<p class="mui-data-con">单价：' + data[i]['valid_price'] + '元</p>' +
+						'		<p class="mui-data-con mui-total">金额：' + (data[i]['real_qty'] * data[i]['valid_price']) + '元</p>' +
+						'	</div>' +
+						'	<div class="mui-col-sm-12">' +
+						'		<div class="mui-numbox" data-numbox-min="1">' +
+						'			<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>' +
+						'			<input class="mui-input-numbox" data-price="'+data[i]['valid_price']+'" type="number" value="' + total[0] + '" />' +
+						'			<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>' +
+						'		</div>' +
+						'	</div>' +
+						'</div>' +
+						'</li>';
+					$(".mui-table-view").append(html);
+					mui('.mui-numbox').numbox();
+				}
+				//调用初始化
+				init();
+			});
+		});
+
+		//初始化绑定
+		function init() {
+			$(".mui-delete").click(function() {
+				$(this).parents("li").remove();
+			});
+			//计算总价格
+			$(".mui-input-numbox").change(function(){
+				$(this).parents('li').find('.mui-total').text("金额："+$(this).val()*$(this).attr('data-price')+"元");
+			});
+		}
+	</script>
+</html>

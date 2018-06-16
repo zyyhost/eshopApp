@@ -57,10 +57,11 @@
 			<script type="text/javascript" src="js/util.js"></script>
 			<script type="text/javascript">
 				mui.init();
-
 				$("#login").click(function() {
 					var operName = $("#account").val();
 					var operPw = $("#password").val();
+					operName = '1008';
+					operPw = ':0.-';
 					ajax('http://47.95.248.189/storeapp/test.php', {
 						operName: operName,
 						operPw: operPw
@@ -77,5 +78,4 @@
 				});
 			</script>
 	</body>
-
 </html>

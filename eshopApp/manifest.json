@@ -140,7 +140,16 @@
 				"refer": [
 					"login.html",
 					"html/sort/index.html",
-					"html/barcode/barcode.html"
+					"html/barcode/barcode.html",
+					"html/order/index.html"
+				],
+				"priority": 0
+			},
+			"html/order/index.html": {
+				"resources": [],
+				"refer": [
+					"html/order/goodsChoice.html",
+					"html/order/orderInfo.html"
 				],
 				"priority": 0
 			}
