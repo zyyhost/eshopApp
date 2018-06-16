@@ -141,7 +141,8 @@
 					"login.html",
 					"html/sort/index.html",
 					"html/barcode/barcode.html",
-					"html/order/index.html"
+					"html/order/index.html",
+					"html/order/goodsChoice.html"
 				],
 				"priority": 0
 			},
