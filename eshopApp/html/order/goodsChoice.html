@@ -46,11 +46,31 @@
 				height: 30px;
 				top: 0px !important;
 			}
-			.goodListUl{
+			
+			.goodListUl {
 				height: 200px;
 			}
+			
 			.mui-popover {
 				height: 300px;
+			}
+			
+			#bottomPopover {
+				font-size: 10px;
+			}
+			
+			.goodName {
+				width: 65%;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
+			}
+			
+			.goodPrice {
+				width: 20%;
+				overflow: hidden;
+				white-space: nowrap;
+				text-overflow: ellipsis;
 			}
 		</style>
 	</head>
@@ -68,32 +88,13 @@
 			<div id="segmentedControlContents" class="mui-col-xs-9" style="border-left: 1px solid #c8c7cc;">
 			</div>
 		</div>
-		<!--右下角弹出菜单-->
+		<!--左下角弹出菜单-->
 		<div id="bottomPopover" class="mui-popover mui-popover-bottom">
 			<div class="mui-popover-arrow"></div>
 			<div class="mui-scroll-wrapper">
 				<div class="mui-scroll">
 					<ul class="mui-table-view">
-						<li class="mui-table-view-cell"><a href="#">Item1</a>
-						</li>
-						<li class="mui-table-view-cell"><a href="#">Item2</a>
-						</li>
-						<li class="mui-table-view-cell"><a href="#">Item3</a>
-						</li>
-						<li class="mui-table-view-cell"><a href="#">Item4</a>
-						</li>
-						<li class="mui-table-view-cell"><a href="#">Item5</a>
-						</li>
-						<li class="mui-table-view-cell"><a href="#">Item6</a>
-						</li>
-						<li class="mui-table-view-cell"><a href="#">Item7</a>
-						</li>
-						<li class="mui-table-view-cell"><a href="#">Item8</a>
-						</li>
-						<li class="mui-table-view-cell"><a href="#">Item9</a>
-						</li>
-						<li class="mui-table-view-cell"><a href="#">Item10</a>
-						</li>
+
 					</ul>
 				</div>
 			</div>
@@ -118,16 +119,16 @@
 		<script type="text/javascript" src="../../js/util.js"></script>
 		<script>
 			//订单总金额
-			var sumPrice = 0;
+			var sumPrice = 0,
+				sumGoods = 0;
 			var goodsArr = new Array();
 			mui.init({
 				swipeBack: true //启用右滑关闭功能
 			});
-			
-			
+
 			//左下角滑动
-			mui('.mui-scroll-wrapper').scroll();
-			
+			bottomPopoverScroll();
+
 			var controls = document.getElementById("segmentedControls");
 			var contents = document.getElementById("segmentedControlContents");
 
@@ -144,7 +145,7 @@
 					for(var i = 0; i < data.length; i++) {
 						html.push('<div id="content' + i + '" class="mui-control-content"><ul class="mui-table-view">');
 						for(var j = 0; j < data[i][1].length; j++) {
-							html.push('<li class="mui-table-view-cell" data-price="' + data[i][1][j]['price'] + '">' + data[i][1][j]['item_name'] + '<a class="mui-icon-plus mui-icon mui-pull-right mui-order-add"></a><a class="mui-pull-right">' + data[i][1][j]['price'] + '元/'+data[i][1][j]['unit_no']+'</a></li>');
+							html.push('<li class="mui-table-view-cell" data-name="' + data[i][1][j]['item_name'] + '" data-price-type="' + data[i][1][j]['unit_no'] + '" data-price="' + data[i][1][j]['price'] + '">' + data[i][1][j]['item_name'] + '</a><span class="mui-pull-right">' + formatNum(data[i][1][j]['price']) + '元/' + data[i][1][j]['unit_no'] + '</span></li>');
 						}
 						html.push('</ul></div>');
 					}
@@ -235,17 +236,41 @@
 							return false;
 						});
 
-						mui(".mui-control-content ul li").on('tap', '.mui-order-add', function(e) {
-							sumPrice = sumPrice + parseFloat($(this).parent().attr("data-price"));
-							showSumPrice(sumPrice);
+						mui(".mui-control-content ul").on('tap', 'li', function(e) {
+							var goodName = $(this).attr("data-name");
+							var price = parseFloat($(this).attr("data-price"));
+							var priceType = $(this).attr("data-price-type");
+							mui.toast("成功添加" + goodName + "到购物车");
+							$(this).remove();
+							sumPrice = utilFloatAdd(sumPrice, price);
+							sumGoods = utilFloatAdd(sumGoods, 1);
+							showSumPrice(sumPrice, sumGoods);
+							appendGoodsCar(goodName, price, priceType);
 						});
 					})();
 				}
 			});
-
-			function showSumPrice(sumPrice) {
-				goodsArr.push(sumPrice);
+			
+			//底部价格计算 个数计算
+			function showSumPrice(sumPrice, sumGoods) {
 				$(".mui-sum-price").text("￥" + sumPrice + "元");
+				$(".mui-goods-size").text(sumGoods);
+			}
+
+			//添加购物车
+			function appendGoodsCar(goodsName, price, priceType) {
+				$("#bottomPopover ul").append("<li class='mui-table-view-cell'>" +
+					"<span class='mui-pull-left goodName'>" + goodsName + "</span>" +
+					"<span class='mui-pull-left goodPrice'>" + price + "元/" + priceType + "</span>" +
+					"<span class='mui-pull-right goodClose mui-icon mui-icon-close'></a>" +
+					"</li>");
+				//左下角滑动
+				bottomPopoverScroll();
+			}
+
+			//左下角滑动
+			function bottomPopoverScroll() {
+				mui('.mui-scroll-wrapper').scroll();
 			}
 		</script>
 	</body>
