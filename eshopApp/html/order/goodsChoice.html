@@ -106,11 +106,6 @@
 				</span>
 			</a>
 			<a class="mui-tab-item mui-active">
-				<span>
-					<span class="mui-badge mui-badge-red mui-sum-price" style="font-size: 14px;">￥0元</span>
-				</span>
-			</a>
-			<a class="mui-tab-item mui-active">
 				<button type="button" class="mui-btn mui-btn-blue mui-btn-outlined mui-line-center placeOrder">下单</button>
 			</a>
 		</nav>
@@ -121,21 +116,23 @@
 	<script type="text/javascript" src="../../js/muiUtil.js"></script>
 	<script>
 		mui.init();
-		//订单总金额
-		var sumPrice = 0,
-			sumGoods = 0;
+		//订单总商品个数
+		var sumGoods = 0;
 		//存入点击后的商品id
 		var goodsArr = new Array();
+		//是否从订单信息进入
+		var orderInfoFlag = false;
 
-		mui.plusReady(function(){
+		mui.plusReady(function() {
 			var from = plus.webview.currentWebview().from;
 			var goodList = plus.webview.currentWebview().goodList.toString();
-			if(from=='orderInfo'){
+			if(from == 'orderInfo') {
 				goodsArr = goodList.split(',');
 				sumGoods = goodsArr.length;
+				orderInfoFlag = true;
 			}
 		});
-		
+
 		var controls = document.getElementById("segmentedControls");
 		var contents = document.getElementById("segmentedControlContents");
 
@@ -153,15 +150,15 @@
 					html.push('<div id="content' + i + '" class="mui-control-content"><ul class="mui-table-view">');
 					for(var j = 0; j < data[i][1].length; j++) {
 						//若果传过来的数组中有此商品，则放在购物车中
-						if(isInArray(goodsArr,data[i][1][j]['item_no'])){
-							appendGoodsCar(data[i][1][j]['item_name'],formatNum(data[i][1][j]['price']),data[i][1][j]['unit_no']);
+						if(isInArray(goodsArr, data[i][1][j]['item_no'])) {
+							appendGoodsCar(data[i][1][j]['item_no'], data[i][1][j]['item_name'], formatNum(data[i][1][j]['price']), data[i][1][j]['unit_no']);
 						}
 						html.push('<li class="mui-table-view-cell" data-itemNo="' + data[i][1][j]['item_no'] + '" data-name="' + data[i][1][j]['item_name'] + '" data-price-type="' + data[i][1][j]['unit_no'] + '" data-price="' + data[i][1][j]['price'] + '">' + data[i][1][j]['item_name'] + '</a><span class="mui-pull-right">' + formatNum(data[i][1][j]['price']) + '元/' + data[i][1][j]['unit_no'] + '</span></li>');
 					}
 					html.push('</ul></div>');
 				}
 				//初始化个数以及金额
-				showSumPriceAndNum(0,goodsArr.length);
+				showSumNum(goodsArr.length);
 				contents.innerHTML = html.join('');
 				//初始化列表
 				controlInit();
@@ -171,14 +168,13 @@
 		});
 
 		//底部价格计算 个数计算
-		function showSumPriceAndNum(sumPrice, sumGoods) {
-			$(".mui-sum-price").text("￥" + sumPrice + "元");
+		function showSumNum(sumGoods) {
 			$(".mui-goods-size").text(sumGoods);
 		}
 
 		//添加购物车
-		function appendGoodsCar(goodsName, price, priceType) {
-			$("#bottomPopover ul").append("<li class='mui-table-view-cell' data-price='" + price + "'>" +
+		function appendGoodsCar(itemNo, goodsName, price, priceType) {
+			$("#bottomPopover ul").append("<li class='mui-table-view-cell' data-itemNo='" + itemNo + "' data-price='" + price + "'>" +
 				"<span class='mui-pull-left goodName'>" + goodsName + "</span>" +
 				"<span class='mui-pull-left goodPrice'>" + price + "元/" + priceType + "</span>" +
 				"<span class='mui-pull-right goodClose mui-icon mui-icon-close'></a>" +
@@ -200,21 +196,24 @@
 			$("#bottomPopover ul li").unbind('tap');
 			//重新绑定
 			$("#bottomPopover ul li").on('tap', '.goodClose', function() {
-				var goodPrice = $(this).parent().attr("data-price");
+				var itemNo = $(this).parent().attr("data-itemNo");
 				$(this).parent().remove();
-				//重新计算数量以及金额
-				sumPrice = utilFloatSub(sumPrice, goodPrice);
 				sumGoods = utilFloatSub(sumGoods, 1);
 				//刷新购物车数量以及金额预估
-				showSumPriceAndNum(sumPrice, sumGoods);
+				showSumNum(sumGoods);
+				//删除数组中的数据
+				var index = goodsArr.indexOf(itemNo);
+				if(index > -1) {
+					goodsArr.splice(index, 1);
+				}
 			});
-		}
-
+		};
 		//初始化商品点击事件
 		function initClick() {
 			$(".mui-control-content ul").on('tap', 'li', function(e) {
 				var itemNo = $(this).attr("data-itemNo");
 				var goodName = $(this).attr("data-name");
+				var price = formatNum($(this).attr("data-price"));
 				//判断是否已经添加到购物车，如果已经添加则不重复添加
 				if(isInArray(goodsArr, itemNo)) {
 					mui.toast("已经添加" + goodName + "到购物车");
@@ -222,17 +221,29 @@
 				}
 				//添加到数组中
 				goodsArr.push(itemNo);
-				var price = parseFloat($(this).attr("data-price"));
 				var priceType = $(this).attr("data-price-type");
-				mui.toast("成功添加" + goodName + "到购物车");
-				//计算总价格
-				sumPrice = utilFloatAdd(sumPrice, price);
-				//计算总闪屏额数
+				//计算商品数
 				sumGoods = utilFloatAdd(sumGoods, 1);
-				//显示商品价格和购物车数量
-				showSumPriceAndNum(sumPrice, sumGoods);
+				//显示购物车数量
+				showSumNum(sumGoods);
 				//在购物车中显示
-				appendGoodsCar(goodName, price, priceType);
+				appendGoodsCar(itemNo, goodName, price, priceType);
+				mui.toast("成功添加" + goodName + "到购物车");
+				if(orderInfoFlag) {
+					var orderInfoPage = plus.webview.getWebviewById('orderInfo' + plus.webview.currentWebview().nowTime);
+					mui.fire(orderInfoPage, 'addItemNo', {
+						addItemNo: itemNo
+					});
+					
+					mui.fire(orderInfoPage, 'addItemNo1', {
+						addItemNo: itemNo
+					});
+					
+					mui.fire(orderInfoPage, 'addItemNo2', {
+						addItemNo: itemNo
+					});
+					mui.back();
+				}
 			});
 		}
 		//下单按钮
@@ -242,8 +253,9 @@
 				return false;
 			}
 			//打开确认订单窗口
-			openWindow("confirmOrder.html", "confirmOrder" + new Date(), {goodList: goodsArr.toString()});
+			openWindow("confirmOrder.html", "confirmOrder" + new Date(), {
+				goodList: goodsArr.toString()
+			});
 		});
 	</script>
-
 </html>

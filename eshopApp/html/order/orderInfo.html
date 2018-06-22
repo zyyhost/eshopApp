@@ -41,6 +41,14 @@
 	<script>
 		mui.init();
 		mui.plusReady(function() {
+
+			//在details页面接收id参数
+			window.addEventListener('addItemNo', function(event) {
+				//获得事件参数
+				var id = event.detail.addItemNo;
+				console.log(id);
+			});
+
 			var orderId = plus.webview.currentWebview().orderId;
 			var html, total;
 			ajax("http://47.95.248.189/storeapp/pm_sheet_detail.php", {
@@ -96,10 +104,12 @@
 			$(".mui-input-numbox").each(function() {
 				goodList.push($(this).attr('data-itemNo'));
 			});
-			
-			openWindow("goodsChoice.html", "goodsChoice" + new Date(), {
+			//获取上个页面打开此页面时传过来的time时间戳。并传到下一个页面
+			var nowTime = plus.webview.currentWebview().nowTime;
+			openWindow("goodsChoice.html", "goodsChoice" + (new Date()).valueOf(), {
 				from: "orderInfo",
-				goodList:goodList
+				goodList: goodList,
+				nowTime: nowTime
 			});
 		});
 	</script>

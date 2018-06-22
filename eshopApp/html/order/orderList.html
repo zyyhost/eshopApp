@@ -324,8 +324,10 @@
 				//订单点击事件
 				$(".mui-order").click(function() {
 					var orderId = $(this).attr("data-orderId");
-					openWindow("orderInfo.html", "orderInfo" + orderId + new Date(), {
-						orderId: orderId
+					var nowTime = (new Date()).valueOf();
+					openWindow("orderInfo.html", "orderInfo"+ nowTime, {
+						orderId: orderId,
+						nowTime: nowTime
 					});
 				});
 
