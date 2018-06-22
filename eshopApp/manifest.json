@@ -136,7 +136,8 @@
 					"html/sort/index.html",
 					"html/barcode/barcode.html",
 					"html/order/index.html",
-					"html/order/goodsChoice.html"
+					"html/order/goodsChoice.html",
+					"html/order/orderList.html"
 				],
 				"priority": 0
 			},
@@ -144,7 +145,29 @@
 				"resources": [],
 				"refer": [
 					"html/order/goodsChoice.html",
+					"html/order/orderInfo.html",
+					"html/order/orderList.html"
+				],
+				"priority": 0
+			},
+			"html/order/orderList.html": {
+				"resources": [],
+				"refer": [
 					"html/order/orderInfo.html"
+				],
+				"priority": 0
+			},
+			"html/order/goodsChoice.html": {
+				"resources": [],
+				"refer": [
+					"html/order/confirmOrder.html"
+				],
+				"priority": 0
+			},
+			"html/order/orderInfo.html": {
+				"resources": [],
+				"refer": [
+					"html/order/goodsChoice.html"
 				],
 				"priority": 0
 			}

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>确认订单</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="../../css/mui.min.css" />
+		<style>
+			.mui-data-red {
+				color: red;
+			}
+			
+			.mui-data-red span {
+				padding: 5px 5px 5px 15px;
+				background: red;
+				color: #fff;
+				border-radius: 0 50% 50% 0;
+			}
+			
+			.mui-badge-blue {
+				color: #fff !important;
+			}
+			.mui-content{margin-bottom: 50px;}
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title">确认订单</h1>
+		</header>
+		<div class="mui-content">
+			<ul class="mui-table-view">
+			</ul>
+		</div>
+		<nav class="mui-bar mui-bar-tab">
+			<a class="mui-tab-item mui-active mui-order-sumAmount">
+				总金额:0元
+			</a>
+			<a class="mui-tab-item mui-badge-blue mui-submit">
+				提交订单
+			</a>
+		</nav>
+	</body>
+	<script type="text/javascript" src="../../js/mui.min.js"></script>
+	<script type="text/javascript" src="../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../js/util.js"></script>
+	<script>
+		mui.init();
+		//订单总金额
+		var sumAmount = 0;
+		mui.plusReady(function() {
+			var goodList = plus.webview.currentWebview().goodList;
+			ajax("http://47.95.248.189/storeapp/bd_item_info_single.php", {
+				item_no: goodList
+			}, function(data) {
+				var html;
+				for(var i = 0; i < data.length; i++) {
+					sumAmount = utilFloatAdd(sumAmount, data[i]['price']);
+					html = "<li class='mui-table-view-cell'>" +
+						"	<div class='mui-slider-right mui-disabled'>" +
+						"		<a class='mui-btn mui-btn-red mui-delete' data-goodsId='454'>删除</a>" +
+						"	</div>" +
+						"	<div class='mui-slider-handle mui-order'>" +
+						"		<div class='mui-col-sm-4 mui-pull-left'>" +
+						"			<p class='mui-ellipsis mui-data-red'><span>" + (i + 1) + "</span>" + data[i]['item_name'] + "</p>" +
+						"			<p class='mui-ellipsis'>单位：" + data[i]['unit_no'] + " </p>" +
+						"			<p class='mui-ellipsis mui-number'>要货量：1</p>" +
+						"		</div>" +
+						"		<div class='mui-col-sm-4 mui-pull-left'>" +
+						"			<p class='mui-ellipsis'>编码：" + data[i]['item_no'] + "</p>" +
+						"			<p class='mui-ellipsis'>单价：" + formatNum(data[i]['price']) + "元</p>" +
+						"			<p class='mui-ellipsis mui-total'>金额：" + (utilFloatMul(data[i]['price'], 1)) + "元</p>" +
+						"		</div>" +
+						"		<div class='mui-col-sm-4  mui-pull-left'>" +
+						"			<div class='mui-numbox' data-numbox-min='1'>" +
+						"				<button class='mui-btn mui-btn-numbox-minus' type='button'>-</button>" +
+						"				<input class='mui-input-numbox' type='number' value='1' data-item-no=" + data[i]['item_no'] + " data-price=" + data[i]['price'] + " />" +
+						"				<button class='mui-btn mui-btn-numbox-plus' type='button'>+</button>" +
+						"			</div>" +
+						"		</div>" +
+						"	</div>" +
+						"</li>";
+					$(".mui-table-view").append(html);
+
+				}
+				mui('.mui-numbox').numbox();
+				//初始化函数
+				init();
+				//初始订单金额显示
+				orderAllAmountShow(sumAmount);
+			});
+		});
+
+		//初始化绑定
+		function init() {
+			//删除商品
+			$(".mui-delete").click(function() {
+				//重新计算金额
+				var muiInputNumber = $(this).parents('li').find('.mui-input-numbox');
+				sumAmount = utilFloatSub(sumAmount, utilFloatMul(muiInputNumber.attr('data-price'), muiInputNumber.val()));
+				orderAllAmountShow(sumAmount);
+				//移除该商品
+				$(this).parents("li").remove();
+			});
+			//计算总价格
+			$(".mui-input-numbox").change(function() {
+				$(this).parents('li').find('.mui-number').text("要货量：" + $(this).val());
+				$(this).parents('li').find('.mui-total').text("金额：" + utilFloatMul($(this).val(), $(this).attr('data-price')) + "元");
+				sumAmount = 0;
+				$(".mui-input-numbox").each(function() {
+					sumAmount = utilFloatAdd(sumAmount, utilFloatMul($(this).val(), $(this).attr('data-price')));
+				});
+				orderAllAmountShow(sumAmount);
+			});
+		}
+		//显示总金额
+		function orderAllAmountShow(sumAmount) {
+			$(".mui-order-sumAmount").text("总金额:" + sumAmount + "元");
+		}
+
+		$(".mui-submit").on('tap', function() {
+			var params = [];
+			$(".mui-input-numbox").each(function() {
+				params.push({
+					"itemNo": $(this).attr("data-item-no"),
+					"number": $(this).val()
+				});
+			});
+			ajax('http://47.95.248.189/storeapp/2.php', {userId:1,goodsList:JSON.stringify(params).toString()}, function(data) {
+				alert(JSON.stringify(data));
+			});
+		})
+	</script>
+</html>

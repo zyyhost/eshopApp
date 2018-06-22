@@ -9,12 +9,6 @@
 		<meta name="apple-mobile-web-app-status-bar-style" content="black">
 		<link rel="stylesheet" href="../../css/mui.min.css" />
 		<style>
-			.mui-data-con {
-				overflow: hidden;
-				white-space: nowrap;
-				text-overflow: ellipsis;
-			}
-			
 			.mui-data-red {
 				color: red;
 			}
@@ -27,10 +21,12 @@
 			}
 		</style>
 	</head>
+
 	<body>
 		<header class="mui-bar mui-bar-nav">
 			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
 			<h1 class="mui-title">订单详情</h1>
+			<a class="mui-icon mui-icon-plus mui-pull-right mui-order-add"></a>
 		</header>
 
 		<div class="mui-content">
@@ -58,19 +54,19 @@
 						'</div>' +
 						'<div class="mui-slider-handle mui-order">' +
 						'	<div class="mui-col-sm-8 mui-pull-left">' +
-						'		<p class="mui-data-con mui-data-red"><span>' + (i + 1) + '</span>&nbsp;' + data[i]['item_name'] + '</p>' +
-						'		<p class="mui-data-con">单位：' + data[i]['unit_no'] + '</p>' +
-						'		<p class="mui-data-con">要货量：' + data[i]['real_qty'] + '</p>' +
+						'		<p class="mui-ellipsis mui-data-red"><span>' + (i + 1) + '</span>&nbsp;' + data[i]['item_name'] + '</p>' +
+						'		<p class="mui-ellipsis">单位：' + data[i]['unit_no'] + '</p>' +
+						'		<p class="mui-ellipsis">要货量：' + data[i]['real_qty'] + '</p>' +
 						'	</div>' +
 						'	<div class="mui-col-sm-4 mui-pull-left">' +
-						'		<p class="mui-data-con">编码：' + data[i]['item_no'] + '</p>' +
-						'		<p class="mui-data-con">单价：' + data[i]['valid_price'] + '元</p>' +
-						'		<p class="mui-data-con mui-total">金额：' + (data[i]['real_qty'] * data[i]['valid_price']) + '元</p>' +
+						'		<p class="mui-ellipsis">编码：' + data[i]['item_no'] + '</p>' +
+						'		<p class="mui-ellipsis">单价：' + data[i]['valid_price'] + '元</p>' +
+						'		<p class="mui-ellipsis mui-total">金额：' + (data[i]['real_qty'] * data[i]['valid_price']) + '元</p>' +
 						'	</div>' +
 						'	<div class="mui-col-sm-12">' +
 						'		<div class="mui-numbox" data-numbox-min="1">' +
 						'			<button class="mui-btn mui-btn-numbox-minus" type="button">-</button>' +
-						'			<input class="mui-input-numbox" data-price="'+data[i]['valid_price']+'" type="number" value="' + total[0] + '" />' +
+						'			<input class="mui-input-numbox" data-itemNo="' + data[i]['item_no'] + '" data-price="' + data[i]['valid_price'] + '" type="number" value="' + total[0] + '" />' +
 						'			<button class="mui-btn mui-btn-numbox-plus" type="button">+</button>' +
 						'		</div>' +
 						'	</div>' +
@@ -90,9 +86,22 @@
 				$(this).parents("li").remove();
 			});
 			//计算总价格
-			$(".mui-input-numbox").change(function(){
-				$(this).parents('li').find('.mui-total').text("金额："+$(this).val()*$(this).attr('data-price')+"元");
+			$(".mui-input-numbox").change(function() {
+				$(this).parents('li').find('.mui-total').text("金额：" + utilFloatMul($(this).val(), $(this).attr('data-price')) + "元");
 			});
 		}
+		//订单新增商品按钮
+		$(".mui-order-add").on('tap', function() {
+			var goodList = new Array();
+			$(".mui-input-numbox").each(function() {
+				goodList.push($(this).attr('data-itemNo'));
+			});
+			
+			openWindow("goodsChoice.html", "goodsChoice" + new Date(), {
+				from: "orderInfo",
+				goodList:goodList
+			});
+		});
 	</script>
+
 </html>

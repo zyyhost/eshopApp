@@ -111,167 +111,139 @@
 				</span>
 			</a>
 			<a class="mui-tab-item mui-active">
-				<button type="button" class="mui-btn mui-btn-blue mui-btn-outlined mui-line-center">下单</button>
+				<button type="button" class="mui-btn mui-btn-blue mui-btn-outlined mui-line-center placeOrder">下单</button>
 			</a>
 		</nav>
-		<script src="../../js/mui.min.js"></script>
-		<script type="text/javascript" src="../../js/jquery.js"></script>
-		<script type="text/javascript" src="../../js/util.js"></script>
-		<script>
-			//订单总金额
-			var sumPrice = 0,
-				sumGoods = 0;
-			var goodsArr = new Array();
-			mui.init({
-				swipeBack: true //启用右滑关闭功能
-			});
+	</body>
+	<script src="../../js/mui.min.js"></script>
+	<script type="text/javascript" src="../../js/jquery.js"></script>
+	<script type="text/javascript" src="../../js/util.js"></script>
+	<script type="text/javascript" src="../../js/muiUtil.js"></script>
+	<script>
+		mui.init();
+		//订单总金额
+		var sumPrice = 0,
+			sumGoods = 0;
+		//存入点击后的商品id
+		var goodsArr = new Array();
 
+		mui.plusReady(function(){
+			var from = plus.webview.currentWebview().from;
+			var goodList = plus.webview.currentWebview().goodList.toString();
+			if(from=='orderInfo'){
+				goodsArr = goodList.split(',');
+				sumGoods = goodsArr.length;
+			}
+		});
+		
+		var controls = document.getElementById("segmentedControls");
+		var contents = document.getElementById("segmentedControlContents");
+
+		ajax('http://47.95.248.189/storeapp/bd_item_info.php', {}, function(data) {
+			if(data == null || data == "") {
+				mui.toast("查询商品失败");
+			} else {
+				var html = [];
+				for(var i = 0; i < data.length; i++) {
+					html.push('<a class="mui-control-item" data-index="' + i + '" href="#content' + i + '">' + data[i][0]['item_clsname'] + '</a>');
+				}
+				controls.innerHTML = html.join('');
+				html = [];
+				for(var i = 0; i < data.length; i++) {
+					html.push('<div id="content' + i + '" class="mui-control-content"><ul class="mui-table-view">');
+					for(var j = 0; j < data[i][1].length; j++) {
+						//若果传过来的数组中有此商品，则放在购物车中
+						if(isInArray(goodsArr,data[i][1][j]['item_no'])){
+							appendGoodsCar(data[i][1][j]['item_name'],formatNum(data[i][1][j]['price']),data[i][1][j]['unit_no']);
+						}
+						html.push('<li class="mui-table-view-cell" data-itemNo="' + data[i][1][j]['item_no'] + '" data-name="' + data[i][1][j]['item_name'] + '" data-price-type="' + data[i][1][j]['unit_no'] + '" data-price="' + data[i][1][j]['price'] + '">' + data[i][1][j]['item_name'] + '</a><span class="mui-pull-right">' + formatNum(data[i][1][j]['price']) + '元/' + data[i][1][j]['unit_no'] + '</span></li>');
+					}
+					html.push('</ul></div>');
+				}
+				//初始化个数以及金额
+				showSumPriceAndNum(0,goodsArr.length);
+				contents.innerHTML = html.join('');
+				//初始化列表
+				controlInit();
+				//初始化商品点击事件
+				initClick();
+			}
+		});
+
+		//底部价格计算 个数计算
+		function showSumPriceAndNum(sumPrice, sumGoods) {
+			$(".mui-sum-price").text("￥" + sumPrice + "元");
+			$(".mui-goods-size").text(sumGoods);
+		}
+
+		//添加购物车
+		function appendGoodsCar(goodsName, price, priceType) {
+			$("#bottomPopover ul").append("<li class='mui-table-view-cell' data-price='" + price + "'>" +
+				"<span class='mui-pull-left goodName'>" + goodsName + "</span>" +
+				"<span class='mui-pull-left goodPrice'>" + price + "元/" + priceType + "</span>" +
+				"<span class='mui-pull-right goodClose mui-icon mui-icon-close'></a>" +
+				"</li>");
 			//左下角滑动
 			bottomPopoverScroll();
+			//购物车删除商品事件
+			goodsCarClick();
+		}
 
-			var controls = document.getElementById("segmentedControls");
-			var contents = document.getElementById("segmentedControlContents");
+		//左下角滑动
+		function bottomPopoverScroll() {
+			mui('.mui-scroll-wrapper').scroll();
+		}
 
-			ajax('http://47.95.248.189/storeapp/bd_item_info.php', {}, function(data) {
-				if(data == null || data == "") {
-					mui.toast("查询商品失败");
-				} else {
-					var html = [];
-					for(var i = 0; i < data.length; i++) {
-						html.push('<a class="mui-control-item" data-index="' + i + '" href="#content' + i + '">' + data[i][0]['item_clsname'] + '</a>');
-					}
-					controls.innerHTML = html.join('');
-					html = [];
-					for(var i = 0; i < data.length; i++) {
-						html.push('<div id="content' + i + '" class="mui-control-content"><ul class="mui-table-view">');
-						for(var j = 0; j < data[i][1].length; j++) {
-							html.push('<li class="mui-table-view-cell" data-name="' + data[i][1][j]['item_name'] + '" data-price-type="' + data[i][1][j]['unit_no'] + '" data-price="' + data[i][1][j]['price'] + '">' + data[i][1][j]['item_name'] + '</a><span class="mui-pull-right">' + formatNum(data[i][1][j]['price']) + '元/' + data[i][1][j]['unit_no'] + '</span></li>');
-						}
-						html.push('</ul></div>');
-					}
-					contents.innerHTML = html.join('');
-
-					//默认选中第一个
-					controls.querySelector('.mui-control-item').classList.add('mui-active');
-					(function() {
-						var controlsElem = document.getElementById("segmentedControls");
-						var contentsElem = document.getElementById("segmentedControlContents");
-						var controlListElem = controlsElem.querySelectorAll('.mui-control-item');
-						var contentListElem = contentsElem.querySelectorAll('.mui-control-content');
-						var controlWrapperElem = controlsElem.parentNode;
-						var controlWrapperHeight = controlWrapperElem.offsetHeight;
-						var controlMaxScroll = controlWrapperElem.scrollHeight - controlWrapperHeight; //左侧类别最大可滚动高度
-						var maxScroll = contentsElem.scrollHeight - contentsElem.offsetHeight; //右侧内容最大可滚动高度
-						var controlHeight = controlListElem[0].offsetHeight; //左侧类别每一项的高度
-						var controlTops = []; //存储control的scrollTop值
-						var contentTops = [0]; //存储content的scrollTop值
-						var length = contentListElem.length;
-						for(var i = 0; i < length; i++) {
-							controlTops.push(controlListElem[i].offsetTop + controlHeight);
-						}
-						for(var i = 1; i < length; i++) {
-							var offsetTop = contentListElem[i].offsetTop;
-							if(offsetTop + 100 >= maxScroll) {
-								var height = Math.max(offsetTop + 100 - maxScroll, 100);
-								var totalHeight = 0;
-								var heights = [];
-								for(var j = i; j < length; j++) {
-									var offsetHeight = contentListElem[j].offsetHeight;
-									totalHeight += offsetHeight;
-									heights.push(totalHeight);
-								}
-								for(var m = 0, len = heights.length; m < len; m++) {
-									contentTops.push(parseInt(maxScroll - (height - heights[m] / totalHeight * height)));
-								}
-								break;
-							} else {
-								contentTops.push(parseInt(offsetTop));
-							}
-						}
-						contentsElem.addEventListener('scroll', function() {
-							var scrollTop = contentsElem.scrollTop;
-							for(var i = 0; i < length; i++) {
-								var offsetTop = contentTops[i];
-								var offset = Math.abs(offsetTop - scrollTop);
-								if(scrollTop < offsetTop) {
-									if(scrollTop >= maxScroll) {
-										onScroll(length - 1);
-									} else {
-										onScroll(i - 1);
-									}
-									break;
-								} else if(offset < 20) {
-									onScroll(i);
-									break;
-								} else if(scrollTop >= maxScroll) {
-									onScroll(length - 1);
-									break;
-								}
-							}
-						});
-						var lastIndex = 0;
-						//监听content滚动
-						var onScroll = function(index) {
-							if(lastIndex !== index) {
-								lastIndex = index;
-								var lastActiveElem = controlsElem.querySelector('.mui-active');
-								lastActiveElem && (lastActiveElem.classList.remove('mui-active'));
-								var currentElem = controlsElem.querySelector('.mui-control-item:nth-child(' + (index + 1) + ')');
-								currentElem.classList.add('mui-active');
-								//简单处理左侧分类滚动，要么滚动到底，要么滚动到顶
-								var controlScrollTop = controlWrapperElem.scrollTop;
-								if(controlScrollTop + controlWrapperHeight < controlTops[index]) {
-									controlWrapperElem.scrollTop = controlMaxScroll;
-								} else if(controlScrollTop > controlTops[index] - controlHeight) {
-									controlWrapperElem.scrollTop = 0;
-								}
-							}
-						};
-						//滚动到指定content
-						var scrollTo = function(index) {
-							contentsElem.scrollTop = contentTops[index];
-						};
-						mui(controlsElem).on('tap', '.mui-control-item', function(e) {
-							scrollTo(this.getAttribute('data-index'));
-							return false;
-						});
-
-						mui(".mui-control-content ul").on('tap', 'li', function(e) {
-							var goodName = $(this).attr("data-name");
-							var price = parseFloat($(this).attr("data-price"));
-							var priceType = $(this).attr("data-price-type");
-							mui.toast("成功添加" + goodName + "到购物车");
-							$(this).remove();
-							sumPrice = utilFloatAdd(sumPrice, price);
-							sumGoods = utilFloatAdd(sumGoods, 1);
-							showSumPrice(sumPrice, sumGoods);
-							appendGoodsCar(goodName, price, priceType);
-						});
-					})();
-				}
+		//购物车删除商品事件
+		function goodsCarClick() {
+			//去除所有绑定事件，不去除的话一个li标签可能会多次绑定
+			$("#bottomPopover ul li").unbind('tap');
+			//重新绑定
+			$("#bottomPopover ul li").on('tap', '.goodClose', function() {
+				var goodPrice = $(this).parent().attr("data-price");
+				$(this).parent().remove();
+				//重新计算数量以及金额
+				sumPrice = utilFloatSub(sumPrice, goodPrice);
+				sumGoods = utilFloatSub(sumGoods, 1);
+				//刷新购物车数量以及金额预估
+				showSumPriceAndNum(sumPrice, sumGoods);
 			});
-			
-			//底部价格计算 个数计算
-			function showSumPrice(sumPrice, sumGoods) {
-				$(".mui-sum-price").text("￥" + sumPrice + "元");
-				$(".mui-goods-size").text(sumGoods);
-			}
+		}
 
-			//添加购物车
-			function appendGoodsCar(goodsName, price, priceType) {
-				$("#bottomPopover ul").append("<li class='mui-table-view-cell'>" +
-					"<span class='mui-pull-left goodName'>" + goodsName + "</span>" +
-					"<span class='mui-pull-left goodPrice'>" + price + "元/" + priceType + "</span>" +
-					"<span class='mui-pull-right goodClose mui-icon mui-icon-close'></a>" +
-					"</li>");
-				//左下角滑动
-				bottomPopoverScroll();
+		//初始化商品点击事件
+		function initClick() {
+			$(".mui-control-content ul").on('tap', 'li', function(e) {
+				var itemNo = $(this).attr("data-itemNo");
+				var goodName = $(this).attr("data-name");
+				//判断是否已经添加到购物车，如果已经添加则不重复添加
+				if(isInArray(goodsArr, itemNo)) {
+					mui.toast("已经添加" + goodName + "到购物车");
+					return false;
+				}
+				//添加到数组中
+				goodsArr.push(itemNo);
+				var price = parseFloat($(this).attr("data-price"));
+				var priceType = $(this).attr("data-price-type");
+				mui.toast("成功添加" + goodName + "到购物车");
+				//计算总价格
+				sumPrice = utilFloatAdd(sumPrice, price);
+				//计算总闪屏额数
+				sumGoods = utilFloatAdd(sumGoods, 1);
+				//显示商品价格和购物车数量
+				showSumPriceAndNum(sumPrice, sumGoods);
+				//在购物车中显示
+				appendGoodsCar(goodName, price, priceType);
+			});
+		}
+		//下单按钮
+		$(".placeOrder").on('tap', function() {
+			if(goodsArr.length == 0) {
+				mui.alert('您还没有选择任何商品，暂时无法下单', '提示');
+				return false;
 			}
+			//打开确认订单窗口
+			openWindow("confirmOrder.html", "confirmOrder" + new Date(), {goodList: goodsArr.toString()});
+		});
+	</script>
 
-			//左下角滑动
-			function bottomPopoverScroll() {
-				mui('.mui-scroll-wrapper').scroll();
-			}
-		</script>
-	</body>
 </html>

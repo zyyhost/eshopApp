@@ -1,22 +1,39 @@
 {
-  "login.html": {
-    "refer": [
-      "index.html"
-    ]
-  },
-  "index.html": {
-    "refer": [
-      "login.html",
-      "html/sort/index.html",
-      "html/barcode/barcode.html",
-      "html/order/index.html",
-      "html/order/goodsChoice.html"
-    ]
-  },
-  "html/order/index.html": {
-    "refer": [
-      "html/order/goodsChoice.html",
-      "html/order/orderInfo.html"
-    ]
-  }
+	"login.html": {
+		"refer": [
+			"index.html"
+		]
+	},
+	"index.html": {
+		"refer": [
+			"login.html",
+			"html/sort/index.html",
+			"html/barcode/barcode.html",
+			"html/order/index.html",
+			"html/order/goodsChoice.html",
+			"html/order/orderList.html"
+		]
+	},
+	"html/order/index.html": {
+		"refer": [
+			"html/order/goodsChoice.html",
+			"html/order/orderInfo.html",
+			"html/order/orderList.html"
+		]
+	},
+	"html/order/orderList.html": {
+		"refer": [
+			"html/order/orderInfo.html"
+		]
+	},
+	"html/order/goodsChoice.html": {
+		"refer": [
+			"html/order/confirmOrder.html"
+		]
+	},
+	"html/order/orderInfo.html": {
+		"refer": [
+			"html/order/goodsChoice.html"
+		]
+	}
 }

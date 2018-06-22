@@ -62,15 +62,15 @@
 		<script type="text/javascript">
 			mui.init();
 			$(".example").click(function() {
-				openWindow("html/order/index.html", "html/order/index", null);
+				openWindow("html/order/orderList.html", "html/order/orderList" + new Date(), null);
 			});
 
 			$(".require").click(function() {
-				openWindow("html/order/goodsChoice.html", "html/order/goodsChoice", null);
+				openWindow("html/order/goodsChoice.html", "html/order/goodsChoice" + new Date(), {from:"index"});
 			});
 
 			$(".barcode").click(function() {
-				openWindow("html/barcode/barcode.html", "html/barcode/barcode", null);
+				openWindow("html/barcode/barcode.html", "html/barcode/barcode" + new Date(), null);
 			});
 		</script>
 	</body>

@@ -1,4 +1,9 @@
-//封装打开窗口
+/**
+ * 封装打开窗口
+ * @param {Object} url 页面路径
+ * @param {Object} id 页面id
+ * @param {Object} data 数据
+ */
 function openWindow(url, id, data) {
 	mui.openWindow({
 		url: url,
@@ -36,6 +41,7 @@ function ajax(url, data, callback) {
 				callback(null);
 				plus.nativeUI.closeWaiting();
 				mui.toast("出现异常:" + type);
+
 			}
 		});
 	});
@@ -112,3 +118,17 @@ function utilFloatDiv(arg1,arg2){
       r2=Number(arg2.toString().replace(".",""));     
       return (r1/r2)*Math.pow(10,t2-t1);     
 }  
+
+
+/**
+ * 使用jquery的inArray方法判断元素是否存在于数组中
+ * @param {Object} arr 数组
+ * @param {Object} value 元素值
+ */
+function isInArray(arr,value){
+    var index = $.inArray(value,arr);
+    if(index >= 0){
+        return true;
+    }
+    return false;
+}

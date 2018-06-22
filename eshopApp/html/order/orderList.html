@@ -46,12 +46,6 @@
 				border-right: 1px solid #AAAAAA;
 			}
 			
-			.mui-data-con {
-				overflow: hidden;
-				white-space: nowrap;
-				text-overflow: ellipsis;
-			}
-			
 			.mui-data-red {
 				color: red;
 			}
@@ -298,18 +292,18 @@
 						'	<a class="mui-btn mui-btn-yellow mui-stick">置顶</a>' +
 						'	<a class="mui-btn mui-btn-red mui-delete">删除</a>' +
 						'</div>' +
-						'<div class="mui-slider-handle mui-order" data-orderId="'+data[i]['sheet_no']+'">' +
+						'<div class="mui-slider-handle mui-order" data-orderId="' + data[i]['sheet_no'] + '">' +
 						'	<div class="mui-col-sm-8 mui-pull-left">' +
-						'		<p class="mui-data-con mui-data-red"><span>' + (i + 1) + '</span>&nbsp;' + data[i]['branch_name'] + '</p>' +
-						'		<p class="mui-data-con">时间：' + data[i]['valid_date'] + '</p>' +
-						'		<p class="mui-data-con">单号：' + data[i]['sheet_no'] + '</p>' +
-						'		<p class="mui-data-con">数量：</p>' +
+						'		<p class="mui-ellipsis mui-data-red"><span>' + (i + 1) + '</span>&nbsp;' + data[i]['branch_name'] + '</p>' +
+						'		<p class="mui-ellipsis">时间：' + data[i]['valid_date'] + '</p>' +
+						'		<p class="mui-ellipsis">单号：' + data[i]['sheet_no'] + '</p>' +
+						'		<p class="mui-ellipsis">数量：</p>' +
 						'	</div>' +
 						'	<div class="mui-col-sm-4 mui-pull-left">' +
-						'		<p class="mui-data-con">状态：' + status + '</p>' +
-						'		<p class="mui-data-con">代码：</p>' +
-						'		<p class="mui-data-con">收货：</p>' +
-						'		<p class="mui-data-con">金额：' + data[i]['sheet_amt'] + '元</p>' +
+						'		<p class="mui-ellipsis">状态：' + status + '</p>' +
+						'		<p class="mui-ellipsis">代码：</p>' +
+						'		<p class="mui-ellipsis">收货：</p>' +
+						'		<p class="mui-ellipsis">金额：' + data[i]['sheet_amt'] + '元</p>' +
 						'	</div>' +
 						'</div>' +
 						'</li>';
@@ -330,7 +324,9 @@
 				//订单点击事件
 				$(".mui-order").click(function() {
 					var orderId = $(this).attr("data-orderId");
-					openWindow("orderInfo.html", "orderInfo"+orderId+new Date(), {orderId:orderId});
+					openWindow("orderInfo.html", "orderInfo" + orderId + new Date(), {
+						orderId: orderId
+					});
 				});
 
 				//置顶功能
